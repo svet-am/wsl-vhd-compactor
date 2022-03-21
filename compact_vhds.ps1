@@ -1,5 +1,5 @@
 # before running, execute Set-ExecutionPolicy RemoteSigned so that your PowerShell will allow it to run
-$DISTROS = @('Debian','Ubuntu','Kali', 'SUSE')
+$DISTROS = @('Debian','Ubuntu','Kali','SUSE')
 $PACKAGESDIR = $Env:LOCALAPPDATA+"\Packages"
 
 do {
@@ -25,11 +25,13 @@ foreach ($DISTRO in $DISTROS) {
 	if(!$DISTRODIRS) {
 		Write-Host "No installed distributions for "$DISTRO
 	} else {
-		Write-Host "Distrubtion located at "$PACKAGESDIR"\"$DISTRODIRS
-		Write-Host "Starting distribution virtual disk compaction..."
+		foreach ($DISTRODIR in $DISTRODIRS) {
+			Write-Host "Distrubtion located at "$PACKAGESDIR"\"$DISTRODIR
+			Write-Host "Starting distribution virtual disk compaction..."
+		
 		
 $DISKPARTCMD = @"
-select vdisk file="$PACKAGESDIR\$DISTRODIRS\LocalState\ext4.vhdx"
+select vdisk file="$PACKAGESDIR\$DISTRODIR\LocalState\ext4.vhdx"
 attach vdisk readonly
 compact vdisk
 detach vdisk
@@ -37,6 +39,7 @@ exit
 "@
 	
 	$DISKPARTCMD | diskpart
-	}	
+	}
+	}
 }
 
