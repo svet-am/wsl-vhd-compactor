@@ -19,7 +19,7 @@ wsl --shutdown
 foreach ($DISTRO in $DISTROS) {
 	Write-Host "Currently looking for distribution: "$DISTRO
 	#Set up a command to search for the installed package name of the distrubtion"
-	$DIRLISTCMD = "dir -Name "+$PACKAGESDIR+"\*"+$DISTRO+"*"
+	$DIRLISTCMD = "Get-ChildItem -Name "+$PACKAGESDIR+"\*"+$DISTRO+"*"
 		
 	$DISTRODIRS = Invoke-Expression -Command $DIRLISTCMD
 	if(!$DISTRODIRS) {
